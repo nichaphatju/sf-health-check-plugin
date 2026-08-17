@@ -1,0 +1,11 @@
+{
+  "name": "sf-health-check",
+  "displayName": "Salesforce Health Check",
+  "version": "1.0.0",
+  "description": "Evidence-based Salesforce org Health Check: schema-valid JSON assessment, DOCX report generation, and Confluence publishing.",
+  "author": {
+    "name": "Gie Jumpachot",
+    "email": "nichaphat.jump@gmail.com"
+  },
+  "license": "UNLICENSED"
+}

@@ -1,0 +1,147 @@
+{
+  "assessment": {
+    "organisation": "ACME Corporation",
+    "orgName": "Production",
+    "orgType": "Production",
+    "edition": "Enterprise Edition",
+    "orgId": "00DXXXXXXXXXXXX",
+    "environments": [
+      "PROD",
+      "UAT",
+      "DEV"
+    ],
+    "assessmentDate": "14 August 2026",
+    "evidenceDate": "12 August 2026",
+    "preparedBy": "NRI Consulting",
+    "version": "1.0 — DRAFT",
+    "classification": "CONFIDENTIAL",
+    "scope": [
+      "Security & Access",
+      "Apex",
+      "Automation",
+      "Data Model",
+      "Integrations"
+    ]
+  },
+  "executiveSummary": {
+    "overallAssessment": "Needs Attention",
+    "summary": "The reviewed Salesforce evidence indicates a generally supportable platform with several material areas requiring remediation. The most significant themes relate to automation efficiency, access governance and maintainability. Findings in this sample are illustrative only.",
+    "keyThemes": [
+      "Automation execution can be narrowed.",
+      "Access governance warrants targeted review.",
+      "Several maintainability improvements can reduce future delivery risk."
+    ],
+    "recommendedNextActions": [
+      "Address High findings first.",
+      "Confirm unresolved context with the platform owner.",
+      "Sequence Medium findings into the remediation backlog."
+    ]
+  },
+  "coverage": [
+    {
+      "area": "Automation",
+      "wellArchitectedLens": [
+        "Easy",
+        "Adaptable"
+      ],
+      "status": "Needs Attention",
+      "summary": "Material automation findings were identified."
+    },
+    {
+      "area": "Security & Access",
+      "wellArchitectedLens": [
+        "Trusted"
+      ],
+      "status": "Generally Healthy",
+      "summary": "No critical issue was identified in the reviewed evidence."
+    }
+  ],
+  "findings": [
+    {
+      "id": "HC-AUT-001",
+      "title": "Broad execution criteria on invoice automation",
+      "category": "Automation",
+      "severity": "Medium",
+      "confidence": "Confirmed",
+      "guidanceBasis": "Verified — Official Salesforce",
+      "wellArchitectedLens": [
+        "Easy",
+        "Adaptable"
+      ],
+      "affectedComponents": [
+        "Invoice_Generation_Flow"
+      ],
+      "observation": "The record-triggered flow executes after create or update without entry criteria in the reviewed metadata.",
+      "evidence": [
+        {
+          "type": "Direct Metadata",
+          "component": "Invoice_Generation_Flow",
+          "location": "force-app/main/default/flows/Invoice_Generation_Flow.flow-meta.xml",
+          "detail": "The start element is configured for create/update and no restrictive entry criteria were identified.",
+          "sourceId": "EV-001"
+        }
+      ],
+      "guidance": {
+        "summary": "Current Salesforce automation guidance recommends designing record-triggered automation with intentional entry conditions and transaction behaviour appropriate to the use case.",
+        "sourceIds": [
+          "SF-001"
+        ]
+      },
+      "gap": "The flow evaluates every qualifying save rather than narrowing execution to the business-state transition that drives invoice creation.",
+      "risk": "At higher transaction volume this can add unnecessary automation work and increase transaction complexity.",
+      "recommendation": "Review the intended business trigger and narrow start conditions where supported by the current process and Salesforce guidance.",
+      "priority": "Near-term",
+      "effort": "S"
+    }
+  ],
+  "positiveFindings": [
+    {
+      "title": "Fault handling is present",
+      "category": "Automation",
+      "summary": "The reviewed flow includes a defined fault-handling path, providing an explicit mechanism for surfaced failures.",
+      "evidenceSourceIds": [
+        "EV-001"
+      ]
+    }
+  ],
+  "componentHighlights": [
+    {
+      "component": "Invoice_Generation_Flow",
+      "type": "Record-Triggered Flow",
+      "reason": "Selected because it supports a material automation finding.",
+      "findingIds": [
+        "HC-AUT-001"
+      ]
+    }
+  ],
+  "limitations": [
+    "This example is metadata-oriented and does not include production runtime telemetry.",
+    "Data quality was not independently sampled."
+  ],
+  "metrics": {
+    "Active Flows": 28,
+    "Apex Classes": 67,
+    "Apex Triggers": 14
+  },
+  "evidenceSources": [
+    {
+      "id": "EV-001",
+      "name": "Salesforce metadata snapshot",
+      "type": "Metadata",
+      "pathOrReference": "force-app/main/default",
+      "date": "12 August 2026"
+    }
+  ],
+  "salesforceSources": [
+    {
+      "id": "SF-001",
+      "title": "Salesforce Record-Triggered Automation Decision Guide",
+      "url": "https://architect.salesforce.com/decision-guides/trigger-automation",
+      "domain": "architect.salesforce.com",
+      "retrievedDate": "14 August 2026",
+      "findingIds": [
+        "HC-AUT-001"
+      ]
+    }
+  ]
+}

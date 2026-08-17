@@ -1,0 +1,15 @@
+{
+  "name": "sf-health-check-marketplace",
+  "owner": {
+    "name": "Gie Jumpachot",
+    "email": "nichaphat.jump@gmail.com"
+  },
+  "plugins": [
+    {
+      "name": "sf-health-check",
+      "source": "./plugins/sf-health-check",
+      "description": "Evidence-based Salesforce org Health Check: schema-valid JSON assessment, DOCX report generation, and Confluence publishing.",
+      "version": "1.0.0"
+    }
+  ]
+}

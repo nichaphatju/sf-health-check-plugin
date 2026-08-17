@@ -1,0 +1,472 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Salesforce Health Check Report",
+  "type": "object",
+  "required": [
+    "assessment",
+    "executiveSummary",
+    "coverage",
+    "findings",
+    "positiveFindings",
+    "limitations",
+    "evidenceSources",
+    "salesforceSources"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "assessment": {
+      "type": "object",
+      "required": [
+        "organisation",
+        "assessmentDate",
+        "scope"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "organisation": {
+          "type": "string",
+          "minLength": 1
+        },
+        "orgName": {
+          "type": "string"
+        },
+        "orgType": {
+          "type": "string"
+        },
+        "edition": {
+          "type": "string"
+        },
+        "orgId": {
+          "type": "string"
+        },
+        "environments": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "assessmentDate": {
+          "type": "string"
+        },
+        "evidenceDate": {
+          "type": "string"
+        },
+        "preparedBy": {
+          "type": "string"
+        },
+        "version": {
+          "type": "string"
+        },
+        "classification": {
+          "type": "string",
+          "default": "CONFIDENTIAL"
+        },
+        "scope": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string"
+          }
+        },
+        "nativeSecurityHealthCheck": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "score": {
+              "type": [
+                "number",
+                "null"
+              ]
+            },
+            "baseline": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "evidenceSourceId": {
+              "type": [
+                "string",
+                "null"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "executiveSummary": {
+      "type": "object",
+      "required": [
+        "overallAssessment",
+        "summary",
+        "keyThemes"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "overallAssessment": {
+          "enum": [
+            "Healthy",
+            "Generally Healthy",
+            "Needs Attention",
+            "At Risk",
+            "Critical",
+            "Not Assessed"
+          ]
+        },
+        "summary": {
+          "type": "string"
+        },
+        "keyThemes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "recommendedNextActions": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "coverage": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "area",
+          "status",
+          "summary"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "area": {
+            "type": "string"
+          },
+          "wellArchitectedLens": {
+            "type": "array",
+            "items": {
+              "enum": [
+                "Trusted",
+                "Easy",
+                "Adaptable"
+              ]
+            }
+          },
+          "status": {
+            "enum": [
+              "Healthy",
+              "Generally Healthy",
+              "Needs Attention",
+              "At Risk",
+              "Critical",
+              "Not Assessed",
+              "Insufficient Evidence"
+            ]
+          },
+          "summary": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "findings": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "title",
+          "category",
+          "severity",
+          "confidence",
+          "guidanceBasis",
+          "affectedComponents",
+          "observation",
+          "evidence",
+          "gap",
+          "risk",
+          "recommendation",
+          "priority",
+          "effort"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^HC-[A-Z0-9]+-[0-9]{3}$"
+          },
+          "title": {
+            "type": "string"
+          },
+          "category": {
+            "type": "string"
+          },
+          "severity": {
+            "enum": [
+              "Critical",
+              "High",
+              "Medium",
+              "Low",
+              "Informational"
+            ]
+          },
+          "confidence": {
+            "enum": [
+              "Confirmed",
+              "High Confidence",
+              "Needs Validation"
+            ]
+          },
+          "guidanceBasis": {
+            "enum": [
+              "Verified — Official Salesforce",
+              "Verified — Organisation Standard",
+              "Requires Guidance Verification",
+              "Design Recommendation — Not a Salesforce Requirement"
+            ]
+          },
+          "wellArchitectedLens": {
+            "type": "array",
+            "items": {
+              "enum": [
+                "Trusted",
+                "Easy",
+                "Adaptable"
+              ]
+            }
+          },
+          "affectedComponents": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "observation": {
+            "type": "string"
+          },
+          "evidence": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "object",
+              "required": [
+                "type",
+                "detail"
+              ],
+              "additionalProperties": false,
+              "properties": {
+                "type": {
+                  "type": "string"
+                },
+                "component": {
+                  "type": "string"
+                },
+                "location": {
+                  "type": "string"
+                },
+                "detail": {
+                  "type": "string"
+                },
+                "sourceId": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "guidance": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "summary": {
+                "type": "string"
+              },
+              "sourceIds": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "gap": {
+            "type": "string"
+          },
+          "risk": {
+            "type": "string"
+          },
+          "recommendation": {
+            "type": "string"
+          },
+          "priority": {
+            "enum": [
+              "Immediate",
+              "Near-term",
+              "Backlog",
+              "Advisory"
+            ]
+          },
+          "effort": {
+            "enum": [
+              "XS",
+              "S",
+              "M",
+              "L",
+              "XL",
+              "Not Estimated"
+            ]
+          }
+        }
+      }
+    },
+    "positiveFindings": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "title",
+          "summary"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "title": {
+            "type": "string"
+          },
+          "category": {
+            "type": "string"
+          },
+          "summary": {
+            "type": "string"
+          },
+          "evidenceSourceIds": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "componentHighlights": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "component",
+          "type",
+          "reason"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "component": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string"
+          },
+          "reason": {
+            "type": "string"
+          },
+          "findingIds": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "details": {
+            "type": "array",
+            "items": {
+              "type": "object"
+            }
+          },
+          "diagramPath": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "limitations": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "metrics": {
+      "type": "object",
+      "additionalProperties": {
+        "type": [
+          "string",
+          "number",
+          "integer",
+          "boolean",
+          "null"
+        ]
+      }
+    },
+    "evidenceSources": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "name",
+          "type"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string"
+          },
+          "pathOrReference": {
+            "type": "string"
+          },
+          "date": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "salesforceSources": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "title",
+          "url"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "url": {
+            "type": "string"
+          },
+          "domain": {
+            "type": "string"
+          },
+          "retrievedDate": {
+            "type": "string"
+          },
+          "findingIds": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    }
+  }
+}
