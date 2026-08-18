@@ -20,10 +20,55 @@ Run in **Assessment Mode**.
 - Do not modify Salesforce metadata.
 - Do not deploy.
 - Do not assume the default authenticated org is the assessment target.
-- Do not retrieve live metadata unless required by scope and the target org has been verified.
+- Retrieve live metadata only when explicitly requested or required by the agreed assessment scope, and only after verifying the target org.
 - A Health Check does not authorise remediation.
 
 If the current project defines its own Assessment Mode / Implementation Mode rules (e.g. in `CLAUDE.md` or `.claude/rules/`), follow those in addition to this skill — they take precedence on project-specific policy (deployment approval, target org selection, etc.).
+
+## Metadata Baseline
+
+If the user explicitly requests the latest/current/live org metadata,
+or the agreed assessment scope requires a fresh retrieval:
+
+1. Identify and verify the target org.
+2. Determine the metadata scope required for the assessment.
+3. Generate the Health Check retrieval manifest at:
+
+   `manifest/package-health-check-<YYYYMMDD>.xml`
+
+   where `<YYYYMMDD>` is the current local date when the assessment
+   is performed.
+
+   Example:
+
+   `manifest/package-health-check-20260818.xml`
+
+4. If a Health Check manifest already exists for the current date:
+   - inspect it first;
+   - reuse it when it matches the agreed assessment scope;
+   - update it when the scope has changed;
+   - do not create duplicate same-day manifests unnecessarily.
+5. Retrieve the required metadata from the verified target org using
+   that manifest.
+6. Start Health Check analysis only after the retrieval completes.
+7. Record the following in the assessment evidence:
+   - target org/environment;
+   - retrieval date/time;
+   - manifest path;
+   - retrieval scope;
+   - retrieval result;
+   - any metadata that could not be retrieved.
+
+If retrieval fails or is incomplete:
+- do not silently rely on stale local metadata;
+- report the limitation;
+- mark affected assessment areas as `Insufficient Evidence`
+  where appropriate.
+
+Prefer targeted retrieval over an unnecessary full-org retrieval.
+
+Do not overwrite or reuse an unrelated deployment manifest.
+The Health Check retrieval manifest must use the `package-health-check-<YYYYMMDD>.xml` naming convention.
 
 ## Required Outcome
 
